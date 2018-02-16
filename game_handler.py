@@ -11,7 +11,8 @@ log = logging.getLogger(__name__)
 class GameHandler():
 
     turn_delay = 2
-    pressure_unit = 2.2
+    pressure_unit = 1.97
+    pressure_padding = 72
 
     def __init__(self, debug=False):
         self.level = 0
@@ -30,7 +31,7 @@ class GameHandler():
         y_diff = (objective_pos[1] - player_pos[1])
         distance = sqrt(x_diff*x_diff + y_diff*y_diff)
         log.info("Platform distance: %s" % distance)
-        press_time = int(distance * self.pressure_unit)
+        press_time = int(distance * self.pressure_unit) + self.pressure_padding
         log.info("Asking move: press time %s " % press_time)
         AdbCom().send_keypress(press_time)
         self.level += 1
