@@ -75,8 +75,13 @@ class ObjectDetection():
         log.info("platform top found: %s,%s" % (top_x, top_y))
 
         max_x = len(area)-1
+        border = 20
+        end_color = area[-1][top_y]
         while area[max_x][top_y] != area[top_x][top_y]:
+            if border and end_color != area[max_x][top_y]:
+                border -= 1
             max_x -= 1
+        max_x -= border
 
         center = int((top_x + max_x) / 2), top_y
         log.info("platform center found: %s,%s" % center)
