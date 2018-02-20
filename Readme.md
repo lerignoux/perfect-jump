@@ -3,8 +3,11 @@ A tool to make perfect jumps in 跳一跳 a wechat mini game.
 
 ## tldr
 ```
+# Create or ensure you have a python3 environment/virtualenv
+# install dependencies
+pip install -r requirements.txt
 # connect your device with adb
-play.py
+python play.py
 ```
 
 ## Android interaction.
@@ -31,3 +34,19 @@ sudo adb start-server
 
 ## improvements:
 ensure platform visibility on background could not be lost during gray scale conversion
+
+## Distance power Computation
+y 252, p 704 too low
+ 193 p 549 too big
+330 908 too big
+330 895 too big
+154 436 tooo low
+304 807 good
+271 725 too big
+243 656 too big
+166 465 good
+152 431 too low
+185 512 good
+131 379 too low
+289 770 too low
+213 582 too low

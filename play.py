@@ -13,6 +13,9 @@ parser = argparse.ArgumentParser(description='Gather user anonymous feedback.')
 parser.add_argument('--debug', '-d', dest='debug',
                     action='store_true',
                     help='Debug mode')
+parser.add_argument('--simple', '-s', dest='simple',
+                    action='store_true',
+                    help='Simple mode using y only, less precise')
 
 if __name__ == "__main__":
     args = parser.parse_args()
@@ -21,4 +24,4 @@ if __name__ == "__main__":
             os.makedirs("./debug")
         logging.getLogger().setLevel(logging.DEBUG)
 
-    GameHandler(debug=args.debug).play()
+    GameHandler(debug=args.debug, simple=args.simple).play()

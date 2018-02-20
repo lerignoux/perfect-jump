@@ -1,3 +1,5 @@
+
+
 import logging
 
 import numpy as np
@@ -80,8 +82,12 @@ class ObjectDetection():
         while area[max_x][top_y] != area[top_x][top_y]:
             if border and end_color != area[max_x][top_y]:
                 border -= 1
+
             max_x -= 1
         max_x -= border
+
+        # We remove the base
+        max_x -= 80
 
         center = int((top_x + max_x) / 2), top_y
         log.info("platform center found: %s,%s" % center)
@@ -90,18 +96,39 @@ class ObjectDetection():
     def next_block_pos(self, player_x, player_y):
         area = self.screen
         ui_padding = int(len(area) / 4)
-        max_x = player_x or len(area)
+        max_x = min(player_x + int(len(self.player)), len(area)-1)
         area = area[ui_padding:max_x]
         # We remove player
         pdheight = int(len(self.player[0])/2)
-        print(player_y-pdheight)
         area = np.concatenate((area[:, 0:player_y-pdheight], area[:, player_y+pdheight:-1]), axis=1)
         area = color.rgb2gray(area)
-        if self.debug:
-            io.imsave("./debug/level_%s_gray.png" % self.level, area)
         plat_x, plat_y = self.get_highest_platform(area)
+        if self.debug:
+            area[plat_x][plat_y] = 0
+            area[plat_x-1][plat_y] = 0
+            area[plat_x+1][plat_y] = 0
+            area[plat_x][plat_y+1] = 0
+            area[plat_x][plat_y-1] = 0
+            io.imsave("./debug/level_%s_gray.png" % self.level, area)
         plat_x += ui_padding
         if plat_y >= player_y-pdheight:
             plat_y += 2*pdheight
         log.info("level platform position: %s,%s" % (plat_x, plat_y))
         return (plat_x, plat_y)
+
+    def next_block_y(self, player_x, player_y):
+        area = self.screen
+        ui_padding = int(len(area) / 4)
+        max_x = min(player_x + int(len(self.player)), len(area)-1)
+        area = area[ui_padding:max_x]
+        # We remove player
+        pdheight = int(len(self.player[0])/2)
+        area = np.concatenate((area[:, 0:player_y-pdheight], area[:, player_y+pdheight:-1]), axis=1)
+        area = color.rgb2gray(area)
+        top_x, top_y = self.get_extreme_color(area)
+        length = 0
+        while area[top_x][top_y + length] == area[top_x][top_y]:
+            length += 1
+        top_y = int(top_y + length/2)
+        log.info("platform top y: %s" % top_y)
+        return top_y
