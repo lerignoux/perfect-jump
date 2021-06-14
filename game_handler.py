@@ -11,8 +11,8 @@ log = logging.getLogger(__name__)
 class GameHandler():
 
     turn_delay = 2
-    pressure_unit = 1.667
-    pressure_padding = 105
+    pressure_unit = 1.112
+    pressure_padding = 171
 
     def __init__(self, debug=False, simple=False):
         self.level = 0
